@@ -1,0 +1,303 @@
+import java.util.Scanner;
+public class TicTacToe{
+	public static void main(String[]args){
+
+		Scanner reader = new Scanner(System.in);
+	// This in array is drawing up the board lines. In (xstart, ystart, xend, yend) format
+		int[][]boardLine = {{0,200,600,200},
+							 {0,400,600,400},
+							 {200,0,200,600},
+							 {400,0,400,600}};
+	// This sets up the array that will be used to set up the X/O grid. They are temporarily filled with hyphens until they are fiflled with x and o values.
+		char [][]arr = new char[3][3];
+		for (int i=0;i<3;i++)
+			for (int j=0;j<3;j++)
+				arr[i][j]='-';
+
+
+	// This line imports the TicTacToeBoard file
+		TicTacToeBoard board = new TicTacToeBoard(620,720);
+	// This sets up the grid given the lines you provided above in the boardLine array
+		board.defineBoard(boardLine);
+	// This will set your pictures to display for the x and o values. Make sure your names match exactly what you type in the parameters.
+		board.setFiles("x.png","o.png");
+	// This sets up the spacing and place values for x and o
+		board.setBoard(arr);
+	// This will refresh the board so that new elements will display.
+		board.repaint();
+
+
+
+		System.out.println("Welcome to Tic Tac Toe");
+		System.out.println("Instructions: Input the row number and column number of your desired position when prompted to.\nTo win, you must get 3 of your character in a row.");
+		System.out.print("Please select a mode 1 player (1) or 2 players (2): ");
+		int mode = reader.nextInt();
+
+		if (mode == 1){
+			System.out.println("Single Player Mode");
+			for(int x = 0; x < 9; x++){
+				System.out.print("Please select a row: ");
+				int rowinput = reader.nextInt();
+
+				while((rowinput > 2) || (rowinput < 0)){
+					System.out.print("Whoops. Please enter a valid row (0-2): ");
+					rowinput = reader.nextInt();
+				}
+
+				System.out.print("Please select a column: ");
+				int columninput = reader.nextInt();
+
+				while((columninput > 2) || (columninput < 0)){
+					System.out.print("Whoops. Please enter a valid column (0-2): ");
+					columninput = reader.nextInt();
+				}
+
+				//
+
+				while((arr[rowinput][columninput] == 'x') || (arr[rowinput][columninput] == 'o')){
+					System.out.println("Whoops. That spot is already taken. Please try again");
+					System.out.print("Please select a row: ");
+					rowinput = reader.nextInt();
+					while((rowinput > 2) || (rowinput < 0)){
+						System.out.print("Whoops. Please enter a valid row (0-2): ");
+						rowinput = reader.nextInt();
+					}
+					System.out.print("Please select a column: ");
+					columninput = reader.nextInt();
+					while((columninput > 2) || (columninput < 0)){
+						System.out.print("Whoops. Please enter a valid column (0-2): ");
+						columninput = reader.nextInt();
+					}
+				}
+
+				//
+
+				arr[rowinput][columninput] = 'x';
+				board.repaint();
+
+				//
+
+				if(((arr[0][0] == 'o') && (arr[0][1] == 'o') && (arr[0][2] == 'o')) || ((arr[1][0] == 'o') && (arr[1][1] == 'o') && (arr[1][2] == 'o')) || ((arr[2][0] == 'o') && (arr[2][1] == 'o') && (arr[2][2] == 'o'))){
+					board.setWinner("Aww. You Lost.", 200, 650, 32);
+					break;
+				}
+				else if(((arr[0][0] == 'o') && (arr[1][0] == 'o') && (arr[2][0] == 'o')) || ((arr[0][1] == 'o') && (arr[1][1] == 'o') && (arr[2][1] == 'o')) || ((arr[0][2] == 'o') && (arr[1][2] == 'o') && (arr[2][2] == 'o'))){
+					board.setWinner("Aww. You Lost.", 200, 650, 32);
+					break;
+				}
+				else if(((arr[0][0] == 'o') && (arr[1][1] == 'o') && (arr[2][2] == 'o')) || ((arr[0][2] == 'o') && (arr[1][1] == 'o') && (arr[2][0] == 'o'))){
+					board.setWinner("Aww. You Lost.", 200, 650, 32);
+					break;
+				}
+
+				//
+
+				if(((arr[0][0] == 'x') && (arr[0][1] == 'x') && (arr[0][2] == 'x')) || ((arr[1][0] == 'x') && (arr[1][1] == 'x') && (arr[1][2] == 'x')) || ((arr[2][0] == 'x') && (arr[2][1] == 'x') && (arr[2][2] == 'x'))){
+					board.setWinner("Yay. You Won.", 200, 650, 32);
+					break;
+				}
+				else if(((arr[0][0] == 'x') && (arr[1][0] == 'x') && (arr[2][0] == 'x')) || ((arr[0][1] == 'x') && (arr[1][1] == 'x') && (arr[2][1] == 'x')) || ((arr[0][2] == 'x') && (arr[1][2] == 'x') && (arr[2][2] == 'x'))){
+					board.setWinner("Yay. You Won.", 200, 650, 32);
+					break;
+				}
+				else if(((arr[0][0] == 'x') && (arr[1][1] == 'x') && (arr[2][2] == 'x')) || ((arr[0][2] == 'x') && (arr[1][1] == 'x') && (arr[2][0] == 'x'))){
+					board.setWinner("Yay. You Won.", 200, 650, 32);
+					break;
+				}
+
+				//
+
+				int comprow = (int)(Math.random()*2);
+				int compcolumn = (int)(Math.random()*2);
+
+				while((arr[comprow][compcolumn] == 'x') || (arr[comprow][compcolumn] == 'o')){
+					comprow = (int)(Math.random()*3);
+					compcolumn = (int)(Math.random()*3);
+				}
+
+				board.delay(1000);
+
+				arr[comprow][compcolumn]='o';
+				board.repaint();
+
+				//
+
+
+				if(((arr[0][0] == 'o') && (arr[0][1] == 'o') && (arr[0][2] == 'o')) || ((arr[1][0] == 'o') && (arr[1][1] == 'o') && (arr[1][2] == 'o')) || ((arr[2][0] == 'o') && (arr[2][1] == 'o') && (arr[2][2] == 'o'))){
+					board.setWinner("Aww. You Lost.", 200, 650, 32);
+					break;
+				}
+				else if(((arr[0][0] == 'o') && (arr[1][0] == 'o') && (arr[2][0] == 'o')) || ((arr[0][1] == 'o') && (arr[1][1] == 'o') && (arr[2][1] == 'o')) || ((arr[0][2] == 'o') && (arr[1][2] == 'o') && (arr[2][2] == 'o'))){
+					board.setWinner("Aww. You Lost.", 200, 650, 32);
+					break;
+				}
+				else if(((arr[0][0] == 'o') && (arr[1][1] == 'o') && (arr[2][2] == 'o')) || ((arr[0][2] == 'o') && (arr[1][1] == 'o') && (arr[2][0] == 'o'))){
+					board.setWinner("Aww. You Lost.", 200, 650, 32);
+					break;
+				}
+
+				//
+
+				if(((arr[0][0] == 'x') && (arr[0][1] == 'x') && (arr[0][2] == 'x')) || ((arr[1][0] == 'x') && (arr[1][1] == 'x') && (arr[1][2] == 'x')) || ((arr[2][0] == 'x') && (arr[2][1] == 'x') && (arr[2][2] == 'x'))){
+					board.setWinner("Yay. You Won.", 200, 650, 32);
+					break;
+				}
+				else if(((arr[0][0] == 'x') && (arr[1][0] == 'x') && (arr[2][0] == 'x')) || ((arr[0][1] == 'x') && (arr[1][1] == 'x') && (arr[2][1] == 'x')) || ((arr[0][2] == 'x') && (arr[1][2] == 'x') && (arr[2][2] == 'x'))){
+					board.setWinner("Yay. You Won.", 200, 650, 32);
+					break;
+				}
+				else if(((arr[0][0] == 'x') && (arr[1][1] == 'x') && (arr[2][2] == 'x')) || ((arr[0][2] == 'x') && (arr[1][1] == 'x') && (arr[2][0] == 'x'))){
+					board.setWinner("Yay. You Won.", 200, 650, 32);
+					break;
+				}
+			}
+			board.showText(true);
+		}
+
+		else if (mode == 2){
+			System.out.println("Two Player Mode");
+			for(int x = 0; x < 9; x++){
+				System.out.print("Player 1, please select a row: ");
+				int rowinput1 = reader.nextInt();
+
+				while((rowinput1 > 2) || (rowinput1 < 0)){
+					System.out.print("Whoops. Please enter a valid row (0-2): ");
+					rowinput1 = reader.nextInt();
+				}
+
+				System.out.print("Player 1, please select a column: ");
+				int columninput1 = reader.nextInt();
+
+				while((columninput1 > 2) || (columninput1 < 0)){
+					System.out.print("Whoops. Please enter a valid column (0-2): ");
+					columninput1 = reader.nextInt();
+				}
+
+				//
+
+				while((arr[rowinput1][columninput1] == 'x') || (arr[rowinput1][columninput1] == 'o')){
+					System.out.println("Whoops. That spot is already taken. Please try again");
+					System.out.print("Player 1, please select a row: ");
+					rowinput1 = reader.nextInt();
+					while((rowinput1 > 2) || (rowinput1 < 0)){
+						System.out.print("Whoops. Please enter a valid row (0-2): ");
+						rowinput1 = reader.nextInt();
+					}
+					System.out.print("Player 1, please select a column: ");
+					columninput1 = reader.nextInt();
+					while((columninput1 > 2) || (columninput1 < 0)){
+						System.out.print("Whoops. Please enter a valid column (0-2): ");
+						columninput1 = reader.nextInt();
+					}
+				}
+
+				//
+
+				arr[rowinput1][columninput1] = 'x';
+				board.repaint();
+
+				//
+
+				if(((arr[0][0] == 'o') && (arr[0][1] == 'o') && (arr[0][2] == 'o')) || ((arr[1][0] == 'o') && (arr[1][1] == 'o') && (arr[1][2] == 'o')) || ((arr[2][0] == 'o') && (arr[2][1] == 'o') && (arr[2][2] == 'o'))){
+					board.setWinner("Player Two Won!", 200, 650, 32);
+					break;
+				}
+				else if(((arr[0][0] == 'o') && (arr[1][0] == 'o') && (arr[2][0] == 'o')) || ((arr[0][1] == 'o') && (arr[1][1] == 'o') && (arr[2][1] == 'o')) || ((arr[0][2] == 'o') && (arr[1][2] == 'o') && (arr[2][2] == 'o'))){
+					board.setWinner("Player Two Won!", 200, 650, 32);
+					break;
+				}
+				else if(((arr[0][0] == 'o') && (arr[1][1] == 'o') && (arr[2][2] == 'o')) || ((arr[0][2] == 'o') && (arr[1][1] == 'o') && (arr[2][0] == 'o'))){
+					board.setWinner("Player Two Won!", 200, 650, 32);
+					break;
+				}
+
+				//
+
+				if(((arr[0][0] == 'x') && (arr[0][1] == 'x') && (arr[0][2] == 'x')) || ((arr[1][0] == 'x') && (arr[1][1] == 'x') && (arr[1][2] == 'x')) || ((arr[2][0] == 'x') && (arr[2][1] == 'x') && (arr[2][2] == 'x'))){
+					board.setWinner("Player One Won!", 200, 650, 32);
+					break;
+				}
+				else if(((arr[0][0] == 'x') && (arr[1][0] == 'x') && (arr[2][0] == 'x')) || ((arr[0][1] == 'x') && (arr[1][1] == 'x') && (arr[2][1] == 'x')) || ((arr[0][2] == 'x') && (arr[1][2] == 'x') && (arr[2][2] == 'x'))){
+					board.setWinner("Player One Won!", 200, 650, 32);
+					break;
+				}
+				else if(((arr[0][0] == 'x') && (arr[1][1] == 'x') && (arr[2][2] == 'x')) || ((arr[0][2] == 'x') && (arr[1][1] == 'x') && (arr[2][0] == 'x'))){
+					board.setWinner("Player One Won!", 200, 650, 32);
+					break;
+				}
+
+				//
+
+				System.out.print("Player 2, please select a row: ");
+				int rowinput2 = reader.nextInt();
+
+				while((rowinput2 > 2) || (rowinput2 < 0)){
+					System.out.print("Whoops. Please enter a valid row (0-2): ");
+					rowinput2 = reader.nextInt();
+				}
+
+				System.out.print("Player 2, please select a column: ");
+				int columninput2 = reader.nextInt();
+
+				while((columninput2 > 2) || (columninput2 < 0)){
+					System.out.print("Whoops. Please enter a valid column (0-2): ");
+					columninput2 = reader.nextInt();
+				}
+
+				//
+
+				while((arr[rowinput2][columninput2] == 'x') || (arr[rowinput2][columninput2] == 'o')){
+					System.out.println("Whoops. That spot is already taken. Please try again");
+					System.out.print("Player 2, please select a row: ");
+					rowinput2 = reader.nextInt();
+					while((rowinput2 > 2) || (rowinput2 < 0)){
+						System.out.print("Whoops. Please enter a valid row (0-2): ");
+						rowinput2 = reader.nextInt();
+					}
+					System.out.print("Player 2, please select a column: ");
+					columninput2 = reader.nextInt();
+					while((columninput2 > 2) || (columninput2 < 0)){
+						System.out.print("Whoops. Please enter a valid column (0-2): ");
+						columninput2 = reader.nextInt();
+					}
+				}
+
+				//
+
+				arr[rowinput2][columninput2] = 'o';
+				board.repaint();
+
+				//
+
+				if(((arr[0][0] == 'o') && (arr[0][1] == 'o') && (arr[0][2] == 'o')) || ((arr[1][0] == 'o') && (arr[1][1] == 'o') && (arr[1][2] == 'o')) || ((arr[2][0] == 'o') && (arr[2][1] == 'o') && (arr[2][2] == 'o'))){
+					board.setWinner("Player Two Won!", 200, 650, 32);
+					break;
+				}
+				else if(((arr[0][0] == 'o') && (arr[1][0] == 'o') && (arr[2][0] == 'o')) || ((arr[0][1] == 'o') && (arr[1][1] == 'o') && (arr[2][1] == 'o')) || ((arr[0][2] == 'o') && (arr[1][2] == 'o') && (arr[2][2] == 'o'))){
+					board.setWinner("Player Two Won!", 200, 650, 32);
+					break;
+				}
+				else if(((arr[0][0] == 'o') && (arr[1][1] == 'o') && (arr[2][2] == 'o')) || ((arr[0][2] == 'o') && (arr[1][1] == 'o') && (arr[2][0] == 'o'))){
+					board.setWinner("Player Two Won!", 200, 650, 32);
+					break;
+				}
+
+				//
+
+				if(((arr[0][0] == 'x') && (arr[0][1] == 'x') && (arr[0][2] == 'x')) || ((arr[1][0] == 'x') && (arr[1][1] == 'x') && (arr[1][2] == 'x')) || ((arr[2][0] == 'x') && (arr[2][1] == 'x') && (arr[2][2] == 'x'))){
+					board.setWinner("Player One Won!", 200, 650, 32);
+					break;
+				}
+				else if(((arr[0][0] == 'x') && (arr[1][0] == 'x') && (arr[2][0] == 'x')) || ((arr[0][1] == 'x') && (arr[1][1] == 'x') && (arr[2][1] == 'x')) || ((arr[0][2] == 'x') && (arr[1][2] == 'x') && (arr[2][2] == 'x'))){
+					board.setWinner("Player One Won!", 200, 650, 32);
+					break;
+				}
+				else if(((arr[0][0] == 'x') && (arr[1][1] == 'x') && (arr[2][2] == 'x')) || ((arr[0][2] == 'x') && (arr[1][1] == 'x') && (arr[2][0] == 'x'))){
+					board.setWinner("Player One Won!", 200, 650, 32);
+					break;
+				}
+			}
+			board.showText(true);
+		}
+	}
+}

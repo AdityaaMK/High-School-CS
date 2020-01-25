@@ -1,5 +1,0 @@
-public static ArrayReview{
-	public static void main(String[]args){
-	
-	}
-}
